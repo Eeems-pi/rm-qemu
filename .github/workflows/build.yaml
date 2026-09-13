@@ -27,7 +27,7 @@ jobs:
           cd tools/builder
           make image
       - name: Push
-        if: github.repository == 'Eeems/rm-qemu'
+        if: github.repository == 'Eeems/rm-qemu' && github.event_name != 'pull_request'
         run: |
           cd tools/builder
           make push
