@@ -23,6 +23,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
           registry: ghcr.io
       - name: Build and push
+        if: github.repository == 'Eeems/rm-qemu'
         run: |
           cd tools/builder
           make push
@@ -117,7 +118,7 @@ jobs:
       - name: Test
         run: make test
       - name: push
-        if: github.event_name != 'pull_request'
+        if: github.repository == 'Eeems/rm-qemu' && github.event_name != 'pull_request'
         run: make -j$(nproc) push
       - name: Upload AppImage
         uses: actions/upload-artifact@v4
