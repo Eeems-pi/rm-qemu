@@ -20,18 +20,20 @@ RUN bash -e <<EOT
   rm -rf /var/lib/apt/lists/*
 EOT
 
-RUN <<EOT
+RUN <<'EOT'
   set -e
+  QS_SHA=9b30a89a3133b133577a411a269f1256db031955
   wget \
     --retry-connrefused \
     --tries=30 \
-    "https://raw.githubusercontent.com/pkgforge-dev/Anylinux-AppImages/refs/heads/main/useful-tools/quick-sharun.sh" \
+    "https://raw.githubusercontent.com/pkgforge-dev/Anylinux-AppImages/${QS_SHA}/useful-tools/quick-sharun.sh" \
     --output-document=/usr/bin/quick-sharun
   chmod +x /usr/bin/quick-sharun
+  U2A_SHA=56052b1940d6a4f699169c8cc7f74ad36607cf53
   wget \
     --retry-connrefused \
     --tries=30 \
-    "https://raw.githubusercontent.com/pkgforge-dev/Anylinux-AppImages/refs/heads/main/useful-tools/uruntime2appimage.sh" \
+    "https://raw.githubusercontent.com/pkgforge-dev/Anylinux-AppImages/${U2A_SHA}/useful-tools/uruntime2appimage.sh" \
     --output-document=/usr/bin/uruntime2appimage
   chmod +x /usr/bin/uruntime2appimage
 EOT
@@ -40,11 +42,10 @@ EOT
 COPY entrypoint /usr/bin
 COPY bin/. /usr/local/bin/
 
-# ponytail: sharun runs in the AppDir where BusyBox ln lacks -r. Install GNU ln from coreutils
-# as /usr/bin/gnuln and a shim that delegates -r to gnuln, otherwise to BusyBox ln.
-COPY bin/ln /usr/local/bin/ln
-RUN set -e; \
-  cp /usr/bin/ln /usr/bin/gnuln; \
-  chmod +x /usr/local/bin/ln
+RUN <<'EOT'
+  set -e
+  ln -sf /usr/bin/sha256sum /usr/local/bin/sha256sum
+  ln -sf /usr/bin/ln /usr/local/bin/ln
+EOT
 
 ENTRYPOINT [ "/usr/bin/entrypoint" ]

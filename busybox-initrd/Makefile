@@ -17,7 +17,7 @@ run: busybox.img script.img ../appimage/bin/get-free-port
 	cpus=$$(nproc); \
 	echo "RM_BUSYBOX_PORT=$${port}"; \
 	echo "cpus=$${cpus}"; \
-	PATH="$$(pwd)/qemu-system-arm/artifact:$$PATH" qemu-system-arm \
+	PATH="$$(pwd)/../qemu-system-arm/artifact:$$PATH" qemu-system-arm \
 	  -machine \
 	  virt \
 	  -smp \
@@ -55,7 +55,7 @@ test:: busybox.img script.img ../appimage/bin/get-free-port
 	cpus=$$(nproc); \
 	echo "RM_BUSYBOX_PORT=$${port}"; \
 	echo "cpus=$${cpus}"; \
-	PATH="$$(pwd)/qemu-system-arm/artifact:$$PATH" qemu-system-arm \
+	PATH="$$(pwd)/../qemu-system-arm/artifact:$$PATH" qemu-system-arm \
 	  -machine \
 	  virt \
 	  -smp \

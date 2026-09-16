@@ -34,4 +34,4 @@ if [ "$#" -ne 0 ]; then
 fi
 SSH_ASKPASS="rm-askpass" \
 SSH_ASKPASS_REQUIRE=force \
-exec ssh "${args[@]}" </dev/stdin >/dev/stdout 2>/dev/stderr
+exec ssh "${args[@]}" <&0 >&1 2>&2

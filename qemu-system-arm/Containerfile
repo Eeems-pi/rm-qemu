@@ -75,7 +75,6 @@ RUN ./configure \
   --extra-cflags="-O2 -march=x86-64-v2 -mtune=generic -fno-stack-protector" \
   --extra-ldflags="-static"
 
-# ponytail: floor on x86-64-v2 (SSE4.2/POPCNT; i7-3770K Ivy Bridge) by patching config-host.mak after meson generates it.
 RUN <<EOT
   set -e
   sed -i 's|^CFLAGS.*|CFLAGS := -O2 -march=x86-64-v2 -mtune=generic -fno-stack-protector|' /qemu/build/config-host.mak 2>/dev/null || true
@@ -83,6 +82,7 @@ RUN <<EOT
   make -j $(nproc) CFLAGS="-O2 -march=x86-64-v2 -mtune=generic -fno-stack-protector" CXXFLAGS="-O2 -march=x86-64-v2 -mtune=generic -fno-stack-protector"
   make -j $(nproc) DESTDIR=/install install
   rm -r build
+  strip /install/usr/bin/qemu-* /install/usr/libexec/qemu-*
 EOT
 
 RUN bash -e <<EOT
@@ -90,7 +90,6 @@ RUN bash -e <<EOT
   cd /install/usr/share/qemu
   cp edk2-arm-{code,vars}.fd /firmware/
   cp firmware/60-edk2-arm.json /firmware/firmware/
-  # ponytail: copy pc-bios roms (efi-virtio.rom etc.) so -M virt firmware lookup works
   cp -r /qemu/pc-bios /firmware/
 EOT
 

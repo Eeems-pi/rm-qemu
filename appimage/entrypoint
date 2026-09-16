@@ -23,8 +23,6 @@ APPDIR="${APPDIR}" \
   _tmp_share=rm-qemu-share \
   quick-sharun \
   /usr/bin/{rm2fb-emu,socat} \
-  /usr/bin/qemu-{img,system-arm,pr-helper,storage-daemon} \
-  /usr/libexec/qemu-bridge-helper \
   /usr/share/qemu/
 
 # ponytail: stub the external hook that upstream repo removed (fix-gnome-csd.hook 404)
@@ -67,9 +65,15 @@ cp -a /artifact/. "$APPDIR/share/rm-qemu/artifact/"
 cp -a \
   /usr/local/bin/. \
   "${APPDIR}/bin"
-# ponytail: inject rebuilt binary (quick-sharun puts it at shared/bin/, launcher at bin/ is old)
-cp -a /usr/bin/qemu-system-arm "${APPDIR}/bin/qemu-system-arm"
-chmod +x "${APPDIR}/bin/qemu-system-arm"
+mkdir -p "${APPDIR}/usr/share/qemu"
+cp -a \
+  /usr/bin/qemu-system-arm \
+  /usr/bin/qemu-img \
+  /usr/bin/qemu-pr-helper \
+  /usr/bin/qemu-storage-daemon \
+  /usr/libexec/qemu-bridge-helper \
+  "${APPDIR}/usr/share/qemu/"
+chmod +x "${APPDIR}"/usr/share/qemu/qemu-*
 # ponytail: fix shrink-image AFTER all cp -a (both bin/ and shared/bin/ exist)
 sed -i 's/compression_type=zstd/compression_type=zlib/g' "${APPDIR}/bin/shrink-image" 2>/dev/null || true
 sed -i 's/compression_type=zstd/compression_type=zlib/g' "${APPDIR}/shared/bin/shrink-image" 2>/dev/null || true

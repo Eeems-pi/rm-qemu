@@ -38,7 +38,7 @@ if ! rm-is-paused; then
   rm-ensure-ssh
 fi
 if [ "$#" -eq 1 ] && [[ "$1" == "--serial" ]]; then
-  exec rm-start </dev/stdin >/dev/stdout 2>/dev/stderr
+  exec rm-start <&0 >&1 2>&2
 fi
 pause=false
 if [ "$#" -ge 1 ] && [[ "$1" == "--pause" ]]; then
@@ -51,7 +51,7 @@ echo "Waiting for serial connection..."
 while rm-is-running && [ ! -S "${STATEDIR:-/run/rm}/serial" ]; do
   sleep 0.2
 done
-tail -f "${STATEDIR:-/run/rm}/serial.log" >/dev/stderr 2>&1 &
+tail -f "${STATEDIR:-/run/rm}/serial.log" >&2 2>&1 &
 tailpid=$!
 # shellcheck disable=SC2064
 trap "rm-pause || true kill -TERM $tailpid" EXIT
@@ -67,7 +67,7 @@ fi
 set -e
 if [ "$#" -eq 0 ]; then
   echo "Started!"
-  rm-exec </dev/stdin >/dev/stdout 2>/dev/stderr
+  rm-exec <&0 >&1 2>&2
 elif [ "$#" -eq 1 ] && [[ "$1" == "--display" ]]; then
   rm2fb-emu 127.0.0.1 "${RM_EMU_PORT:-8888}"
 else

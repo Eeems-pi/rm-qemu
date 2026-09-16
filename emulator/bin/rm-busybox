@@ -17,5 +17,5 @@ fi
 rm-busybox-start "${1:-$(rm-image-path)}"
 shift
 rm-busybox-mount
-rm-busybox-exec "$@" </dev/stdin >/dev/stdout 2>/dev/stderr
+rm-busybox-exec "$@" <&0 >&1 2>&2
 rm-busybox-stop

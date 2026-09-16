@@ -8,14 +8,14 @@ else
   exit 1
 fi
 if [ ! -f "$image" ]; then
-  echo "Error: $image is not found" >/dev/stderr
+  echo "Error: $image is not found" >&2
   exit 1
 fi
 STATEDIR=${STATEDIR:-/run/rm}
 mkdir -p "$STATEDIR"
 imagestate="$STATEDIR/busybox-rootfs.qcow2"
 if [ -f "$imagestate" ] && lsof "$(readlink -f "$imagestate")" 2>/dev/null | grep -q qemu-system-arm; then
-  echo "Error: Busybox is currently running" >/dev/stderr
+  echo "Error: Busybox is currently running" >&2
   exit 1
 fi
 ln -sf "$image" "$imagestate"

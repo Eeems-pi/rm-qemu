@@ -11,7 +11,7 @@ if [ $# -ge 1 ]; then
 fi
 echo "Waiting for ssh to start..."
 ret=1
-fail_retry=5
+fail_retry=300
 deny_retry=2
 while [ $ret -ne 0 ]; do
   output=$(timeout 2s rm-exec true 2>&1)

@@ -6,12 +6,12 @@ export DATADIR="$HOME/.local/share/rm-qemu"
 export CACHEDIR="$HOME/.cache/rm-qemu/cache"
 export STATEDIR="$HOME/.cache/rm-qemu/state"
 mkdir -p "$DATADIR" "$CACHEDIR" "$STATEDIR"
-export PATH="$_D/bin:${PATH}"
+export PATH="$_D/bin:$_D/usr/share/qemu:${PATH}"
 export RM_EMU_PORT=${RM_EMU_PORT:-$(get-free-port)}
 export RM_SSH_PORT=${RM_SSH_PORT:-$(get-free-port "${RM_EMU_PORT}")}
 if [ $# -eq 1 ] && [[ "$1" == "--debug" ]]; then
   cd "$_D"
-  exec bash -l </dev/stdin >/dev/stdout 2>/dev/stderr
+  exec bash -l <&0 >&1 2>&2
 fi
 errors=()
 if ! command -v ssh >/dev/null; then
@@ -27,4 +27,4 @@ if [ ${#errors[@]} -gt 0 ]; then
   done
   exit 1
 fi
-exec entrypoint "$@" </dev/stdin >/dev/stdout 2>/dev/stderr
+exec entrypoint "$@" <&0 >&1 2>&2
