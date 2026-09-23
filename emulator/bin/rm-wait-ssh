@@ -12,9 +12,8 @@ fi
 echo "Waiting for ssh to start..."
 ret=1
 fail_retry=300
-deny_retry=60
+deny_retry=40
 success=0
-seed=0
 while [ $success -lt 2 ]; do
   output=$(timeout 2s rm-exec true 2>&1)
   ret=$?
@@ -34,20 +33,7 @@ while [ $success -lt 2 ]; do
       exit 1
     fi
     echo "Warning $ret: Connection denied, retrying..."
-    if [ $seed -lt 1 ]; then
-      seed=1
-      echo "root" | rm-serial
-      rm-serial <<EOF
-        mkdir -p /home/root/.ssh
-        chmod 0700 /home/root/.ssh
-        cp /etc/dropbear/authorized_keys /home/root/.ssh/authorized_keys
-        chmod 0600 /home/root/.ssh/authorized_keys
-        exit
-EOF
-      sleep 2
-    else
-      sleep 0.9
-    fi
+    sleep 0.9
   elif [[ "$output" == *"Segmentation fault"* ]] || [ $ret -eq 139 ]; then
     echo "Error: ssh executable is broken."
     echo "$output"

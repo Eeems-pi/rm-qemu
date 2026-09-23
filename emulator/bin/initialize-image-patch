@@ -53,6 +53,7 @@ for dev in A B; do
     mkdir -p etc/systemd/system/xochitl.service.d
 
     cp -a /tmp/id_rsa.pub etc/dropbear/authorized_keys
+    echo 'DROPBEAR_EXTRA_ARGS=" -B -A /etc/dropbear/authorized_keys"' > etc/default/dropbear
     mkdir -p etc/skel/.ssh/
     chmod 0700 etc/skel/.ssh/
     cp -a /tmp/id_rsa.pub etc/skel/.ssh/authorized_keys
