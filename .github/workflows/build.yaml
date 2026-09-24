@@ -214,6 +214,8 @@ jobs:
       - name: Make executable
         run: chmod +x ./*.AppImage
       - name: Test
+        env:
+          RM_WAIT_SSH_TIMEOUT: 20m
         run: ./*.AppImage ${{ matrix.version }} true
       - name: Upload logs on failure
         if: failure()
