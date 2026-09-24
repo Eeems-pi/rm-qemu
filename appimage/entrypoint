@@ -74,13 +74,6 @@ cp -a \
   /usr/libexec/qemu-bridge-helper \
   "${APPDIR}/usr/share/qemu/"
 chmod +x "${APPDIR}"/usr/share/qemu/qemu-*
-# ponytail: fix shrink-image AFTER all cp -a (both bin/ and shared/bin/ exist)
-sed -i 's/compression_type=zstd/compression_type=zlib/g' "${APPDIR}/bin/shrink-image" 2>/dev/null || true
-sed -i 's/compression_type=zstd/compression_type=zlib/g' "${APPDIR}/shared/bin/shrink-image" 2>/dev/null || true
-sed -i 's/ -c / /g' "${APPDIR}/bin/shrink-image" 2>/dev/null || true
-sed -i 's/ -c / /g' "${APPDIR}/shared/bin/shrink-image" 2>/dev/null || true
-# ponytail: end
-
 APPDIR="${APPDIR}" \
   OUTNAME=rm-qemu.AppImage \
   VERSION="$(date +%Y.%m.%d-%H%M)" \

@@ -21,8 +21,7 @@ mv "$IMAGE" "$BAK"
 qemu-img convert \
   --source-format qcow2 \
   -O qcow2 \
-  -c \
-  -o compression_type=zstd \
+  -o compression_type=zlib \
   $args \
   "$BAK"/* \
   "$IMAGE"
