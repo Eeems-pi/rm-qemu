@@ -1,19 +1,27 @@
 #!/bin/bash
-exec rm-busybox-exec <<EOF
+exec rm-busybox-exec <<'EOF'
   set -e
   cd /mnt
   sync
   sync
-  if [ -d boot ] && mountpoint -q boot;then
-    umount boot
-  fi
-  if [ -d rootA ] && mountpoint -q rootA;then
-    umount rootA
-  fi
-  if [ -d rootB ] && mountpoint -q rootB;then
-    umount rootB
-  fi
-  if [ -d home ] && mountpoint -q home;then
-    umount home
-  fi
+  rc=0
+  for m in boot rootA rootB home;do
+    if [ ! -d "$m" ] || ! mountpoint -q "$m";then
+      continue
+    fi
+    if umount "$m";then
+      continue
+    fi
+    pids=$(lsof | awk -v d="/mnt/$m" '$1 != 1 && index($4, d) == 1 && !seen[$1]++ {print $1}')
+    if [ -n "$pids" ];then
+      kill -15 $pids 2>/dev/null
+      sleep 2
+    fi
+    if umount "$m";then
+      continue
+    fi
+    echo "Error: umount $m failed" >&2
+    rc=1
+  done
+  [ "$rc" = 0 ]
 EOF
