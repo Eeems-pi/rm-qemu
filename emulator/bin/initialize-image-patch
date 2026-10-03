@@ -96,7 +96,7 @@ EOF
     rm-busybox-exec sed -i 's/wlan/eth/' /mnt/root${dev}/lib/systemd/system/dhcpcd.service
   fi
 done
-rm-busybox-exec <<EOF
+rm-busybox-exec <<'EOF'
   set -e
   cd /mnt
   mkdir -p home/root/.config/remarkable/
