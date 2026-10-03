@@ -106,8 +106,7 @@ rm-busybox-exec <<EOF
   echo "/dev/mmcblk1  /var/log  ext4  defaults,x-systemd.before=systemd-journald.service 0 0" >> rootA/etc/fstab
   echo "/dev/mmcblk1  /var/log  ext4  defaults,x-systemd.before=systemd-journald.service 0 0" >> rootB/etc/fstab
   for d in A B; do
-    if ! cmp -s /tmp/id_rsa.pub root\${d}/etc/skel/.ssh/authorized_keys
-        || ! cmp -s /tmp/id_rsa.pub root\${d}/etc/dropbear/authorized_keys; then
+    if ! cmp -s /tmp/id_rsa.pub root\${d}/etc/skel/.ssh/authorized_keys || ! cmp -s /tmp/id_rsa.pub root\${d}/etc/dropbear/authorized_keys; then
       echo "ERROR: root\${d} ssh files are corrupted" >&2
       exit 1
     fi
