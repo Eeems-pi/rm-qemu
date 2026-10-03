@@ -29,10 +29,10 @@ rm-busybox-exec <<'EOF'
   chmod 0600 /tmp/id_rsa.pub
   cp -f /tmp/id_rsa.pub home/root/.ssh/authorized_keys
   for d in A B;do
-    cp -f /tmp/id_rsa.pub root\$d/home/root/.ssh/authorized_keys
-    cp -f /tmp/id_rsa.pub root\$d/etc/dropbear/authorized_keys
-    rm-chroot \$d systemctl unmask dropbear.socket
-    rm-chroot \$d systemctl enable dropbear.socket
+    cp -f /tmp/id_rsa.pub root${d}/home/root/.ssh/authorized_keys
+    cp -f /tmp/id_rsa.pub root${d}/etc/dropbear/authorized_keys
+    rm-chroot ${d} systemctl unmask dropbear.socket
+    rm-chroot ${d} systemctl enable dropbear.socket
   done
   rm /tmp/id_rsa.pub
 EOF

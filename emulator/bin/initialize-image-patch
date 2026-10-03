@@ -28,6 +28,8 @@ if ! [ -f ~/.ssh/id_rsa ]; then
     -f "$HOME/.ssh/id_rsa" \
     -N ''
 fi
+# Get password for xochitl config (default: reMarkable)
+password="$(${ROOTDIR}/emulator/bin/rm-askpass)"
 if $start; then
   rm-busybox-start "$rootfs"
   rm-busybox-exec <<EOF
@@ -103,7 +105,7 @@ rm-busybox-exec <<EOF
   mkdir -p home/root/.config/remarkable/
   cp -a rootA/etc/skel/. home/root
   echo "[General]" > home/root/.config/remarkable/xochitl.conf
-  echo "DeveloperPassword=\$(rm-askpass)" >> home/root/.config/remarkable/xochitl.conf
+  echo "DeveloperPassword=${password}" >> home/root/.config/remarkable/xochitl.conf
   echo "/dev/mmcblk1  /var/log  ext4  defaults,x-systemd.before=systemd-journald.service 0 0" >> rootA/etc/fstab
   echo "/dev/mmcblk1  /var/log  ext4  defaults,x-systemd.before=systemd-journald.service 0 0" >> rootB/etc/fstab
   for d in A B; do
