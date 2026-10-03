@@ -23,14 +23,14 @@ rm-busybox-exec <<EOF
     rootB/home/root/.ssh
 EOF
 rm-busybox-upload "$HOME/.ssh/id_rsa.pub" /tmp/id_rsa.pub
-rm-busybox-exec <<EOF
+rm-busybox-exec <<'EOF'
   set -e
   cd /mnt
   chmod 0600 /tmp/id_rsa.pub
-  cp -a /tmp/id_rsa.pub home/root/.ssh/authorized_keys
+  cp -f /tmp/id_rsa.pub home/root/.ssh/authorized_keys
   for d in A B;do
-    cp -a /tmp/id_rsa.pub root\$d/home/root/.ssh/authorized_keys
-    cp -a /tmp/id_rsa.pub root\$d/etc/dropbear/authorized_keys
+    cp -f /tmp/id_rsa.pub root\$d/home/root/.ssh/authorized_keys
+    cp -f /tmp/id_rsa.pub root\$d/etc/dropbear/authorized_keys
     rm-chroot \$d systemctl unmask dropbear.socket
     rm-chroot \$d systemctl enable dropbear.socket
   done

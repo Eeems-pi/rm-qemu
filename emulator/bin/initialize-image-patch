@@ -97,7 +97,7 @@ EOF
     rm-busybox-exec sed -i 's/wlan/eth/' /mnt/root${dev}/lib/systemd/system/dhcpcd.service
   fi
 done
-rm-busybox-exec <<'EOF'
+rm-busybox-exec <<EOF
   set -e
   cd /mnt
   mkdir -p home/root/.config/remarkable/
@@ -111,12 +111,12 @@ rm-busybox-exec <<'EOF'
       echo "ERROR: root${d}/etc/default/dropbear corruption detected" >&2
       exit 1
     fi
-    if ! cmp -s rootA/etc/skel/.ssh/authorized_keys root${d}/etc/skel/.ssh/authorized_keys; then
-      echo "ERROR: root${d}/etc/skel/.ssh/authorized_keys mismatch" >&2
+    if ! cmp -s /tmp/id_rsa.pub root${d}/etc/skel/.ssh/authorized_keys; then
+      echo "ERROR: root${d}/etc/skel/.ssh/authorized_keys mismatch vs source" >&2
       exit 1
     fi
-    if ! cmp -s rootA/etc/dropbear/authorized_keys root${d}/etc/dropbear/authorized_keys; then
-      echo "ERROR: root${d}/etc/dropbear/authorized_keys mismatch" >&2
+    if ! cmp -s /tmp/id_rsa.pub root${d}/etc/dropbear/authorized_keys; then
+      echo "ERROR: root${d}/etc/dropbear/authorized_keys mismatch vs source" >&2
       exit 1
     fi
   done
