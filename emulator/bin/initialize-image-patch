@@ -103,20 +103,20 @@ rm-busybox-exec <<EOF
   mkdir -p home/root/.config/remarkable/
   cp -a rootA/etc/skel/. home/root
   echo "[General]" > home/root/.config/remarkable/xochitl.conf
-  echo "DeveloperPassword=$(rm-askpass)" >> home/root/.config/remarkable/xochitl.conf
+  echo "DeveloperPassword=\$(rm-askpass)" >> home/root/.config/remarkable/xochitl.conf
   echo "/dev/mmcblk1  /var/log  ext4  defaults,x-systemd.before=systemd-journald.service 0 0" >> rootA/etc/fstab
   echo "/dev/mmcblk1  /var/log  ext4  defaults,x-systemd.before=systemd-journald.service 0 0" >> rootB/etc/fstab
   for d in A B; do
-    if [ "$(cat root${d}/etc/default/dropbear)" != 'DROPBEAR_EXTRA_ARGS=" -B"' ]; then
-      echo "ERROR: root${d}/etc/default/dropbear corruption detected" >&2
+    if [ "\$(cat root\${d}/etc/default/dropbear)" != 'DROPBEAR_EXTRA_ARGS=" -B"' ]; then
+      echo "ERROR: root\${d}/etc/default/dropbear corruption detected" >&2
       exit 1
     fi
-    if ! cmp -s /tmp/id_rsa.pub root${d}/etc/skel/.ssh/authorized_keys; then
-      echo "ERROR: root${d}/etc/skel/.ssh/authorized_keys mismatch vs source" >&2
+    if ! cmp -s /tmp/id_rsa.pub root\${d}/etc/skel/.ssh/authorized_keys; then
+      echo "ERROR: root\${d}/etc/skel/.ssh/authorized_keys mismatch vs source" >&2
       exit 1
     fi
-    if ! cmp -s /tmp/id_rsa.pub root${d}/etc/dropbear/authorized_keys; then
-      echo "ERROR: root${d}/etc/dropbear/authorized_keys mismatch vs source" >&2
+    if ! cmp -s /tmp/id_rsa.pub root\${d}/etc/dropbear/authorized_keys; then
+      echo "ERROR: root\${d}/etc/dropbear/authorized_keys mismatch vs source" >&2
       exit 1
     fi
   done
