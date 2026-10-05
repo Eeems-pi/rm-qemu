@@ -1,5 +1,7 @@
 [Unit]
 Conflicts=dropbear.service
+Requires=dropbearkey.service
+After=dropbearkey.service
 
 [Socket]
 ListenStream=22
