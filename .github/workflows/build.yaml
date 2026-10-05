@@ -113,7 +113,8 @@ jobs:
         with:
           key: >-
             rootfs-${{ hashFiles('busybox-initrd/overlay/**',
-            'emulator/bin/**') }}
+            'emulator/bin/**',
+            'emulator/files/**') }}
           path: |
             emulator/.cache
             emulator/.data
