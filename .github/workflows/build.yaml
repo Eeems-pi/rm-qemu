@@ -231,14 +231,14 @@ jobs:
           name: ${{ matrix.version }}-logs
           path: /github/home/.local/share/rm-qemu/logs-*.qcow2
       - name: Upload serial console on failure
-        if: failure() && runner.debug
+        if: failure()
         uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.version }}-serial
           path: /github/home/.cache/rm-qemu/state/serial.log
           if-no-files-found: warn
       - name: Upload prepared image on failure
-        if: failure() && runner.debug
+        if: failure()
         uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.version }}-image
