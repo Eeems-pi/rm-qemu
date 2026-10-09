@@ -30,16 +30,6 @@ if [ "$#" -eq 1 ] && [[ "$1" == "--help" ]]; then
 fi
 rm-select "$1"
 shift
-# Clean up stale snapshots in CI/test environments to avoid SSH key mismatches
-if [[ "$RM_WAIT_SSH_TIMEOUT" != "" ]] || [[ "$CI" == "true" ]]; then
-  if rm-has-snapshot running 2>/dev/null; then
-    if rm-is-running; then
-      rm-monitor delvm running 2>/dev/null || true
-    else
-      qemu-img snapshot -d running "$(rm-image-path)" 2>/dev/null || true
-    fi
-  fi
-fi
 if [[ "$RM_ENSURE_IMAGE" == "1" ]]; then
   echo "Ensuring image is in a good state..."
   rm-ensure-image "$1" || true
