@@ -30,6 +30,10 @@ while [ $success -lt 2 ]; do
       echo "Error: Unable to connect with publickey."
       echo "  Please rm-monitor quit && rm-ensure-ssh and then try again."
       echo "$output"
+      if [ -n "$SSH_LOG_LEVEL" ]; then
+        echo "--- DEBUG ---"
+        echo "SSH_LOG_LEVEL=$SSH_LOG_LEVEL"
+      fi
       exit 1
     fi
     echo "Warning $ret: Connection denied, retrying..."
