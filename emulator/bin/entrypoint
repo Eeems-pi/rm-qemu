@@ -34,14 +34,6 @@ if [[ "$RM_ENSURE_IMAGE" == "1" ]]; then
   echo "Ensuring image is in a good state..."
   rm-ensure-image "$1" || true
 fi
-# Remove any stale 'running' snapshot to avoid SSH key mismatches
-if rm-has-snapshot running 2>/dev/null; then
-  if rm-is-running; then
-    rm-monitor delvm running 2>/dev/null || true
-  else
-    qemu-img snapshot -d running "$(rm-image-path)" 2>/dev/null || true
-  fi
-fi
 if ! rm-is-paused; then
   echo "Ensuring SSH key is configured..."
   rm-ensure-ssh
