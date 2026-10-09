@@ -35,5 +35,7 @@ rm-busybox-exec <<'EOF'
     rm-chroot ${d} systemctl enable dropbear.socket
   done
   rm /tmp/id_rsa.pub
+  sync
 EOF
 rm-busybox-stop
+sync
