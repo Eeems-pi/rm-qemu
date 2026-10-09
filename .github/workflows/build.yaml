@@ -244,13 +244,11 @@ jobs:
           name: ${{ matrix.version }}-image
           path: /github/home/.local/share/rm-qemu/rootfs-*.qcow2
           if-no-files-found: warn
-      - name: Expose ssh key for upload
-        if: failure() && runner.debug
-        run: chmod 700 /github/home/.ssh
       - name: Upload ssh key on failure
         if: failure() && runner.debug
         uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.version }}-sshkey
           path: /github/home/.ssh/id_rsa*
+          include-hidden-files: true
           if-no-files-found: warn

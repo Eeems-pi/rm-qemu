@@ -7,7 +7,6 @@ args=(
   -o PubkeyAcceptedKeyTypes=+ssh-rsa
   -o BatchMode=yes
   -o PasswordAuthentication=no
-  -i "$HOME/.ssh/id_rsa"
 )
 socket="${STATEDIR:-/run/rm}/ssh"
 if [ -S "$socket" ]; then
