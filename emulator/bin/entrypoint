@@ -37,6 +37,10 @@ fi
 if ! rm-is-paused; then
   echo "Ensuring SSH key is configured..."
   rm-ensure-ssh
+  # Small delay to ensure filesystem is stable in CI
+  if [[ "$CI" == "true" ]] || [[ "$RM_WAIT_SSH_TIMEOUT" != "" ]]; then
+    sleep 2
+  fi
 fi
 if [ "$#" -eq 1 ] && [[ "$1" == "--serial" ]]; then
   exec rm-start <&0 >&1 2>&2
